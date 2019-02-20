@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Capstone.DAL;
+using Capstone.Models;
 
 namespace Capstone
 {
@@ -19,6 +21,17 @@ namespace Capstone
             {
                 Console.WriteLine("Select from parks to view details");
 
+                ParkSqlDAO parkDAO = new ParkSqlDAO(ConnectionString);
+                IList<Park> parks = parkDAO.GetAllParks();
+
+                foreach(Park park in parks)
+                {
+                    Console.WriteLine(park.ToString());
+                }
+                Console.WriteLine("(Q) Quit");
+
+                string choice = Console.ReadLine();
+                if (choice.ToLower() == "q") break;
             }
         }
     }

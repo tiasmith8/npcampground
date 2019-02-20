@@ -18,7 +18,7 @@ namespace Capstone.Models
         //Display the park information
         public override string ToString()
         {
-            return ParkId.ToString() + "\n" + Name + " " + Location;
+            return ParkId.ToString() + ") " + Name;
         }
     }
 }
