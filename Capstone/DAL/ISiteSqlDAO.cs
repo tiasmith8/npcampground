@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Capstone.DAL
 {
-    interface ISiteSqlDAO
+    public interface ISiteSqlDAO
     {
     }
 }

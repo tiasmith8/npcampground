@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Capstone.DAL
+namespace Capstone
 {
-    public interface IParkSqlDAO
+    public class MainMenu
     {
     }
 }
