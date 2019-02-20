@@ -59,9 +59,33 @@ namespace Capstone.DAL
             return park;
         }
 
-        public IList<Park> GetParkInfo(int parkId)
+        public Park GetParkInfo(int parkId)
         {
-            throw new NotImplementedException();
+            Park park = new Park();
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(ConnectionString))
+                {
+                    conn.Open();
+                    string sql = "SELECT * FROM park WHERE park_id = @parkId;";
+                    SqlCommand cmd = new SqlCommand(sql, conn);
+                    cmd.Parameters.AddWithValue("@parkId", parkId);
+                    SqlDataReader reader = cmd.ExecuteReader();
+                    if (reader.Read())
+                    {
+                        park = ConvertReaderToPark(reader);
+                    }
+                }
+            }
+            catch (SqlException ex)
+            {
+                Console.WriteLine("Error getting connection to dataase");
+                Console.WriteLine(ex.Message);
+                throw;
+            }
+
+            return park;
         }
     }
 }

@@ -20,5 +20,19 @@ namespace Capstone.Models
         {
             return ParkId.ToString() + ") " + Name;
         }
+
+        /// <summary>
+        /// Prints "Park Information Screen"
+        /// </summary>
+        /// <param name="parkChoice"></param>
+        public void Display(Park parkChoice)
+        {
+            Console.WriteLine(Name + " National Park");
+            Console.WriteLine($"{"Location", -1} {parkChoice.Location, 25}");
+            Console.WriteLine($"Established: {parkChoice.EstablishDate, 25}");
+            Console.WriteLine($"Area: {parkChoice.Area, 25}");
+            Console.WriteLine($"Annual Visitors: {parkChoice.Visitors, 25}");
+            Console.WriteLine("\n" + Description + "\n");
+        }
     }
 }

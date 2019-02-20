@@ -18,6 +18,6 @@ namespace Capstone.DAL
         /// </summary>
         /// <param name="parkId"></param>
         /// <returns></returns>
-        IList<Park> GetParkInfo(int parkId);
+        Park GetParkInfo(int parkId);
     }
 }
