@@ -4,7 +4,8 @@ using System.Text;
 
 namespace Capstone.DAL
 {
-    class PackSqlDAO
+    public class ParkSqlDAO
     {
+
     }
 }
