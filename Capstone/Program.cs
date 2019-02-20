@@ -16,6 +16,8 @@ namespace Capstone
             IConfigurationRoot configuration = builder.Build();
 
             string connectionString = configuration.GetConnectionString("Project");
+            MainMenu mainMenu = new MainMenu(connectionString);
+            mainMenu.Run();
         }
     }
 }
