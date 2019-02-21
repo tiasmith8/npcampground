@@ -8,7 +8,7 @@ namespace Capstone
 {
     public class MainMenu
     {
-        public string ConnectionString { get;}
+        private string ConnectionString { get;}
 
         public MainMenu(string connectionString)
         {
