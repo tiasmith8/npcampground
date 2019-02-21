@@ -18,6 +18,8 @@ namespace Capstone
 
         private int CampgroundChoice { get; set; }
 
+        private decimal CampGroundFee { get; set; }
+
         private IParkSqlDAO parkDAO;
         private ICampgroundSqlDAO campgroundDAO;
         private ISiteSqlDAO siteDAO;
@@ -135,6 +137,8 @@ namespace Capstone
                     Console.WriteLine("Which campground (enter 0 to cancel)?: ");
                     this.CampgroundChoice = int.Parse(Console.ReadLine());
 
+                    if (CampgroundChoice == 0) break;
+
                     Console.WriteLine("What is the arrival date?: ");
                     DateTime arrivalDateChoice = DateTime.Parse(Console.ReadLine());
 
@@ -142,12 +146,33 @@ namespace Capstone
                     DateTime departureDateChoice = DateTime.Parse(Console.ReadLine());
 
                     Console.WriteLine("Results Matching Your Search Criteria");
-                    Console.WriteLine("Site No.     Max Occup. Accessible? Max RV Length  Utility  Cost");
+                    Console.WriteLine("Site No.     Max Occup. Accessible? Max RV Length  Utility  Total Cost");
 
                     //Call SiteDao method to view all campsites at campground
                     // Returns list of sites. Display list + cost
                     this.Sites = siteDAO.GetAvailableSites(this.CampgroundChoice, arrivalDateChoice, departureDateChoice);
-                    DisplayCamgroundSites();
+
+                    if (this.Sites.Count == 0)
+                    {
+                        Console.WriteLine("No sites available for given dates, chooise new dates [y/n]");
+                        string choice = Console.ReadLine();
+
+                        if (choice.ToLower() == "y") ReservationMenu();
+                        else break;
+                    }
+          
+                    DisplayCamgroundSites((departureDateChoice - arrivalDateChoice).Days);
+
+                    Console.WriteLine("Which site should be reserved (enter 0 to cancel)? ");
+                    string siteReservation = Console.ReadLine();
+
+                    if (siteReservation == "0") break;
+
+                    Console.WriteLine("What name shoudl the reservation be made under? ");
+                    string reservationName = Console.ReadLine();
+
+                    int reservationID = reservationDAO.CreateReservation(int.Parse(siteReservation), reservationName,arrivalDateChoice,departureDateChoice,DateTime.Now);
+                    Console.WriteLine($"The reservation has been made and the confirmation ID is {reservationID}");
                 }
 
                 else if(reservationChoice == "2")
@@ -162,15 +187,16 @@ namespace Capstone
             Console.WriteLine("\t\tName     Open        Close       Daily Fee");
             foreach (Campground campground in this.Campgrounds)
             {
+                this.CampGroundFee = campground.DailyFee;
                 Console.WriteLine(campground.ToString());
             }
         }
 
-        public void DisplayCamgroundSites()
+        public void DisplayCamgroundSites(int days)
         {
             foreach(Site site in Sites)
             {
-                Console.WriteLine(site.ToString());
+                Console.WriteLine($"{site.ToString()} {this.CampGroundFee * days:C2}");
             }
         }    
     }

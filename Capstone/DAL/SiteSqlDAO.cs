@@ -26,7 +26,7 @@ namespace Capstone.DAL
                     
                     conn.Open();
 
-                    SqlCommand cmd = new SqlCommand("Select site.site_id, max_occupancy, accessible, max_rv_length, utilities " +
+                    SqlCommand cmd = new SqlCommand("Select TOP 5 site.site_id, max_occupancy, accessible, max_rv_length, utilities " +
                         "FROM site " +
                         "WHERE campground_id = @campgroundChoice AND site.site_id not IN(SELECT site.site_id from reservation r " +
                         "JOIN site ON r.site_id = site.site_id Where to_date > @arrivalDateChoice AND from_date < @departureDateChoice AND site.campground_id = @campgroundChoice)", conn);
