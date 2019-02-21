@@ -10,6 +10,10 @@ namespace Capstone
     {
         private string ConnectionString { get; } //Save database connection information(server name, db name)
 
+        private IList<Campground> Campgrounds = new List<Campground>();
+
+        private string ParkChoice { get; set; }
+
         private IParkSqlDAO parkDAO;
         private ICampgroundSqlDAO campgroundDAO;
         private ISiteSqlDAO siteDAO;
@@ -49,12 +53,12 @@ namespace Capstone
                 Console.WriteLine("(Q) Quit");
 
                 // Read in user choice
-                string choice = Console.ReadLine();
-                if (choice.ToLower() == "q") break; // Quit if q
+                this.ParkChoice = Console.ReadLine();
+                if (ParkChoice.ToLower() == "q") break; // Quit if q
 
                 // After user selects which park to get details on,
                 // Get information on that 1 park choice
-                Park parkChoice = parkDAO.GetParkInfo(int.Parse(choice));
+                Park parkChoice = parkDAO.GetParkInfo(int.Parse(ParkChoice));
                 Console.WriteLine("Park Information");
                 //Print info for chosen park
                 parkChoice.Display(parkChoice);
@@ -81,15 +85,13 @@ namespace Capstone
                 //View campgrounds in chosen park
                 else if (choice == "1")
                 {   //Get a list of all campgrounds
-                    IList<Campground> campgrounds = campgroundDAO.GetAllCampgrounds(int.Parse(choice));
+                    this.Campgrounds = campgroundDAO.GetAllCampgrounds(int.Parse(ParkChoice));
                     //Loop to print the campgrounds list
                     Console.WriteLine();
                     Console.WriteLine("Park Campgrounds");
-                    Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(choice)).Name} National Park Campgrounds");
-                    foreach(Campground campground in campgrounds)
-                    {
-                        Console.WriteLine(campground.ToString());
-                    }
+                    Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(ParkChoice)).Name} National Park Campgrounds");
+
+                    DisplayCampgroundInformation(Campgrounds);
                 }
                 else if (choice == "2")
                 {
@@ -116,11 +118,9 @@ namespace Capstone
                     Console.WriteLine("Search for Campground Reservation");
                     Console.WriteLine("\t\tName     Open        Close       Daily Fee");
                     //loop through campgrounds again
-                    Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(choice)).Name} National Park Campgrounds");
-                    foreach (Campground campground in campgrounds)
-                    {
-                        Console.WriteLine(campground.ToString());
-                    }
+                    //Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(choice)).Name} National Park Campgrounds");
+                    DisplayCampgroundInformation(Campgrounds);
+
                     Console.WriteLine("Which campground (enter 0 to cancel)?: ");
                     string campgroundChoice = Console.ReadLine();
 
@@ -133,7 +133,7 @@ namespace Capstone
                     Console.WriteLine("Results Matching Your Search Criteria");
                     Console.WriteLine("Site No.     Max Occup. Accessible? Max RV Length  Utility  Cost");
                     //Call SiteSqlDao method to view all campsites at campground
-                    siteDAO.GetAllCampsitesByCampgroundIdAndAvailability(campgroundChoice, arrivalDateChoice, departureDateChoice);
+                    //siteDAO.GetAllCampsitesByCampgroundIdAndAvailability(campgroundChoice, arrivalDateChoice, departureDateChoice);
                 }
 
                 else if(reservationChoice == "2")
@@ -141,6 +141,14 @@ namespace Capstone
                     break;
                 }
 
+            }
+        }
+
+        public void DisplayCampgroundInformation(IList<Campground> campgrounds)
+        {
+            foreach (Campground campground in campgrounds)
+            {
+                Console.WriteLine(campground.ToString());
             }
         }
     }
