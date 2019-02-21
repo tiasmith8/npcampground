@@ -14,6 +14,8 @@ namespace Capstone
 
         private string ParkChoice { get; set; }
 
+        private int CampgroundChoice { get; set; }
+
         private IParkSqlDAO parkDAO;
         private ICampgroundSqlDAO campgroundDAO;
         private ISiteSqlDAO siteDAO;
@@ -129,18 +131,18 @@ namespace Capstone
                     Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name} National Park Campgrounds");
 
                     Console.WriteLine("Which campground (enter 0 to cancel)?: ");
-                    string campgroundChoice = Console.ReadLine();
+                    this.CampgroundChoice = int.Parse(Console.ReadLine());
 
                     Console.WriteLine("What is the arrival date?: ");
-                    string arrivalDateChoice = Console.ReadLine();
+                    DateTime arrivalDateChoice = DateTime.Parse(Console.ReadLine());
 
                     Console.WriteLine("What is the departure date?: ");
-                    string departureDateChoice = Console.ReadLine();
+                    DateTime departureDateChoice = DateTime.Parse(Console.ReadLine());
 
                     Console.WriteLine("Results Matching Your Search Criteria");
                     Console.WriteLine("Site No.     Max Occup. Accessible? Max RV Length  Utility  Cost");
                     //Call SiteSqlDao method to view all campsites at campground
-                    //siteDAO.GetAllCampsitesByCampgroundIdAndAvailability(campgroundChoice, arrivalDateChoice, departureDateChoice);
+                    siteDAO.GetAvailableSites(this.CampgroundChoice, arrivalDateChoice, departureDateChoice);
                 }
 
                 else if(reservationChoice == "2")
