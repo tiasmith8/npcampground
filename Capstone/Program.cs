@@ -35,7 +35,8 @@ namespace Capstone
 
 
 //TODO
-/* Delete MainMenu.cs since we have NpCampgroundCLI.cs now and don't need it (same code)
+/* Delete MainMenu.cs since we have NpCampgroundCLI.cs now and don't need it (same code) - done
+ * Catch incorrect input to menus (not 1, 2, 3)
  * Fix spacing/padding for printing campgrounds and parks in Models->Campground ToString method
  * Fix spacing/padding in Models-> Park
  * Create ToString method overrides for Reservation model and Site model
