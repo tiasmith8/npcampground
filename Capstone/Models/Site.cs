@@ -13,7 +13,14 @@ namespace Capstone.Models
         public bool Accessible { get; set; }
         public int Max_Rv_Length { get; set; }
         public bool Utilities { get; set; }
+
+        public override string ToString()
+        {
+            return $"#{Site_id,-4} {Max_Occupancy,-30}{Accessible,-12}{Max_Rv_Length,-12}{Utilities}";
+        }
     }
+
+
 }
 
 

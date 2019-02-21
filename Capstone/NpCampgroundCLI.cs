@@ -12,6 +12,8 @@ namespace Capstone
 
         private IList<Campground> Campgrounds = new List<Campground>();
 
+        private IList<Site> Sites = new List<Site>();
+
         private string ParkChoice { get; set; }
 
         private int CampgroundChoice { get; set; }
@@ -141,8 +143,10 @@ namespace Capstone
 
                     Console.WriteLine("Results Matching Your Search Criteria");
                     Console.WriteLine("Site No.     Max Occup. Accessible? Max RV Length  Utility  Cost");
+
                     //Call SiteSqlDao method to view all campsites at campground
-                    siteDAO.GetAvailableSites(this.CampgroundChoice, arrivalDateChoice, departureDateChoice);
+                    this.Sites = siteDAO.GetAvailableSites(this.CampgroundChoice, arrivalDateChoice, departureDateChoice);
+                    DisplayCamgroundSites();
                 }
 
                 else if(reservationChoice == "2")
@@ -160,5 +164,15 @@ namespace Capstone
                 Console.WriteLine(campground.ToString());
             }
         }
+
+        public void DisplayCamgroundSites()
+        {
+            foreach(Site site in Sites)
+            {
+                Console.WriteLine(site.ToString());
+            }
+        }
+        
+        
     }
 }

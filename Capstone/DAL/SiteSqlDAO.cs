@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using Capstone.Models;
-using System.Data.SqlClient
+using System.Data.SqlClient;
 
 namespace Capstone.DAL
 {
@@ -15,9 +15,11 @@ namespace Capstone.DAL
             this.ConnectionString = connectionString;
         }
 
-        public IList<Site> GetAvailableSites(int campgroundChoice, DateTime arrivalDateChoice, DateTime departureDateChoice)
+        public List<Site> GetAvailableSites(int campgroundChoice, DateTime arrivalDateChoice, DateTime departureDateChoice)
         {
-            List<Site> sites = new List<Site>();
+            Stack<int> availableSites = new Stack<int>();
+
+            List<Site> returnSites = new List<Site>();
 
             try
             {
@@ -28,8 +30,7 @@ namespace Capstone.DAL
 
                     //SqlCommand cmd = new SqlCommand("Select reservation.site_id, from_date,to_date From site JOIN reservation ON site.site_id = reservation.reservation_id WHERE campground_id = @campgroundChoice", conn);
                     SqlCommand cmd = new SqlCommand("Select reservation.site_id, reservation.from_date, reservation.to_date " +
-                        "From reservation JOIN site ON site.site_id = reservation.reservation_id WHERE campground_id = 1", conn);
-
+                        "From reservation JOIN site ON site.site_id = reservation.reservation_id WHERE campground_id = @campgroundChoice", conn);
                     cmd.Parameters.AddWithValue("@campgroundChoice", campgroundChoice);
 
                     SqlDataReader reader = cmd.ExecuteReader();
@@ -45,8 +46,7 @@ namespace Capstone.DAL
                         };
                         reservations.Add(reservation);
                     }
-
-                    Stack<int> availableSites = new Stack<int>();
+                    reader.Close();
 
                     //Loop through the reservations list
                     foreach(Reservation reservation in reservations)
@@ -65,16 +65,20 @@ namespace Capstone.DAL
                             }
                         }
                     }
+                    string stringOfSites = ConvertSitesToString(availableSites);
+                    //(SELECT campground.daily_fee From campground WHERE campground_id = @campgroundChoice) AS 'Cost' " 
+                    cmd = new SqlCommand ("Select site.site_id, max_occupancy,accessible,max_rv_length,utilities" +
+                        "FROM site JOIN reservation ON site.site_id = reservation.reservation_id WHERE campground_id = campgroundChoice AND site.site_id IN(@stringOfSites)", conn);
+                    cmd.Parameters.AddWithValue("@campgroundChoice", campgroundChoice);
+                    cmd.Parameters.AddWithValue("@stringOfSites", stringOfSites);
 
-                    //List is created, look at each siteid and see if available
-                    for (int i = 1; i < 52; i++)
+                    SqlDataReader siteReader = cmd.ExecuteReader();
+
+                    while (siteReader.Read())
                     {
-                        if(reservations[i].Site_Id == i)
-                        {
-
-                        }
+                        Site site = ConvertReadertoSite(siteReader);
+                        returnSites.Add(site);
                     }
-
 
                 }
             }
@@ -86,7 +90,32 @@ namespace Capstone.DAL
                 throw;
             }
 
-            return sites;
+            return returnSites;
+        }
+
+        private Site ConvertReadertoSite(SqlDataReader reader)
+        {
+            Site site = new Site();
+
+            site.Site_id = Convert.ToInt32(reader["site_id"]);
+            site.Max_Occupancy = Convert.ToInt32(reader["max_occupancy"]);
+            site.Accessible = Convert.ToBoolean(reader["accessible"]);
+            site.Max_Rv_Length = Convert.ToInt32(reader["max_rv_length"]);
+            site.Utilities = Convert.ToBoolean(reader["utilities"]);
+
+            return site;
+        }
+
+        public string ConvertSitesToString(Stack<int> sites)
+        {
+            string siteString = string.Empty;
+
+            foreach (int site in sites)
+            {
+                siteString += site;
+                siteString += ",";
+            }
+            return siteString.Substring(0, siteString.Length - 1);
         }
     }
 }
