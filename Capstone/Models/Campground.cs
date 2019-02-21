@@ -4,8 +4,6 @@ using System.Text;
 
 namespace Capstone.Models
 {
-
-
     //Represents a row in the database campground table
     public class Campground
     {
@@ -37,6 +35,5 @@ namespace Capstone.Models
         {
             return $"#{CampgroundId.ToString(),-4} {Name,-15}{monthConversion[OpenMonth],-12}{monthConversion[ClosedMonth],-12}{DailyFee:C2}";
         }
-
     }
 }
