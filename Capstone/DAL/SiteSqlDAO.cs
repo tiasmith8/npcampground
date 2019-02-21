@@ -17,77 +17,30 @@ namespace Capstone.DAL
 
         public List<Site> GetAvailableSites(int campgroundChoice, DateTime arrivalDateChoice, DateTime departureDateChoice)
         {
-            Stack<int> availableSites = new Stack<int>();
             List<Site> returnSites = new List<Site>();
 
             try
             {
                 using (SqlConnection conn = new SqlConnection(ConnectionString))
                 {
-                    List<Reservation> reservations = new List<Reservation>();
+                    
                     conn.Open();
 
-                    //SqlCommand cmd = new SqlCommand("Select reservation.site_id, from_date,to_date From site JOIN reservation ON site.site_id = reservation.reservation_id WHERE campground_id = @campgroundChoice", conn);
-                    SqlCommand cmd = new SqlCommand("Select reservation.site_id, reservation.from_date, reservation.to_date " +
-                        "From reservation JOIN site ON site.site_id = reservation.reservation_id WHERE campground_id = @campgroundChoice", conn);
+                    SqlCommand cmd = new SqlCommand("Select site.site_id, max_occupancy,accessible,max_rv_length,utilities " +
+                        "FROM site" +
+                        "WHERE campground_id = @campgroundChoice AND site.site_id not IN(SELECT site.site_id from reservation r JOIN site ON r.site_id = site.site_id Where to_date > @arrivalDateChoice AND from_date < @departureDateChoice AND site.campground_id = @campgroundChoice)", conn);
                     cmd.Parameters.AddWithValue("@campgroundChoice", campgroundChoice);
+                    cmd.Parameters.AddWithValue("@arrivalDateChoice", arrivalDateChoice);
+                    cmd.Parameters.AddWithValue("@departureDateChoice", departureDateChoice);
 
                     SqlDataReader reader = cmd.ExecuteReader();
 
                     //Creates list of all reservations with dates and siteIds
                     while (reader.Read())
                     {
-                        Reservation reservation = new Reservation()
-                        {
-                            Site_Id = Convert.ToInt32(reader["site_id"]),
-                            From_Date = Convert.ToDateTime(reader["from_date"]),
-                            To_Date = Convert.ToDateTime(reader["to_date"])
-                        };
-                        reservations.Add(reservation);
-                    }
-                    reader.Close();
-
-                    //Loop through the reservations list
-                    foreach(Reservation reservation in reservations) //1 2 3 
-                    {
-                        //Create a list of ints with sites that are available
-                        if (!availableSites.Contains(reservation.Site_Id) && ((arrivalDateChoice < reservation.From_Date 
-                            && departureDateChoice < reservation.From_Date) ||(arrivalDateChoice > reservation.To_Date)))
-                            {
-                                availableSites.Push(reservation.Site_Id); //Add to list of available sites
-                            }
-                        else if (availableSites.Contains(reservation.Site_Id))
-                        {
-                            if ((arrivalDateChoice >= reservation.From_Date && arrivalDateChoice <= reservation.To_Date))
-                            {
-                                availableSites.Pop();
-                            }
-                        }
-                    }
-
-                    //At this point we have a list of sites to display to the user. Returns the list of sites
-
-
-
-                    //Gives a string of sites based on availableSites which is a stack with site_ids needed
-                    string stringOfSites = ConvertSitesToString(availableSites);
-
-
-                    //(SELECT campground.daily_fee From campground WHERE campground_id = @campgroundChoice) AS 'Cost' " 
-                    cmd = new SqlCommand ("Select site.site_id, max_occupancy,accessible,max_rv_length,utilities" +
-                        "FROM site JOIN reservation ON site.site_id = reservation.reservation_id WHERE campground_id = campgroundChoice " +
-                        "AND site.site_id IN(@stringOfSites)", conn);
-                    cmd.Parameters.AddWithValue("@campgroundChoice", campgroundChoice);
-                    cmd.Parameters.AddWithValue("@stringOfSites", (1, 2, 3)); //"1,2,3" -> 1,2,3 only //stringOfSites availableSites
-
-                    SqlDataReader siteReader = cmd.ExecuteReader();
-
-                    while (siteReader.Read())
-                    {
-                        Site site = ConvertReadertoSite(siteReader);
+                        Site site = ConvertReadertoSite(reader);
                         returnSites.Add(site);
                     }
-
                 }
             }
 
@@ -112,18 +65,6 @@ namespace Capstone.DAL
             site.Utilities = Convert.ToBoolean(reader["utilities"]);
 
             return site;
-        }
-
-        public string ConvertSitesToString(Stack<int> sites)
-        {
-            string siteString = string.Empty;
-
-            foreach (int site in sites)
-            {
-                siteString += site;
-                siteString += ",";
-            }
-            return siteString.Substring(0, siteString.Length - 1);
         }
     }
 }
