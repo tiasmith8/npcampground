@@ -6,7 +6,7 @@ namespace Capstone.Models
 {
     //Model for the park table
     public class Park
-    {
+    {   //Park object Properties - maps to table columns
         public int ParkId { get; set; }
         public string Name { get; set; }
         public string Location { get; set; }

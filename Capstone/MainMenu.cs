@@ -46,8 +46,8 @@ namespace Capstone
                 parkChoice.Display(parkChoice);
 
                 //Call command menu
-                CampgroundMenu campgroundMenu = new CampgroundMenu(int.Parse(choice));
-                campgroundMenu.Run();
+                //CampgroundMenu campgroundMenu = new CampgroundMenu(int.Parse(choice));
+                //campgroundMenu.Run();
 
             }
         }
