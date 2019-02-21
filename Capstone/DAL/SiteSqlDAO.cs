@@ -18,7 +18,6 @@ namespace Capstone.DAL
         public List<Site> GetAvailableSites(int campgroundChoice, DateTime arrivalDateChoice, DateTime departureDateChoice)
         {
             Stack<int> availableSites = new Stack<int>();
-
             List<Site> returnSites = new List<Site>();
 
             try
@@ -49,7 +48,7 @@ namespace Capstone.DAL
                     reader.Close();
 
                     //Loop through the reservations list
-                    foreach(Reservation reservation in reservations)
+                    foreach(Reservation reservation in reservations) //1 2 3 
                     {
                         //Create a list of ints with sites that are available
                         if (!availableSites.Contains(reservation.Site_Id) && ((arrivalDateChoice < reservation.From_Date 
@@ -65,12 +64,21 @@ namespace Capstone.DAL
                             }
                         }
                     }
+
+                    //At this point we have a list of sites to display to the user. Returns the list of sites
+
+
+
+                    //Gives a string of sites based on availableSites which is a stack with site_ids needed
                     string stringOfSites = ConvertSitesToString(availableSites);
+
+
                     //(SELECT campground.daily_fee From campground WHERE campground_id = @campgroundChoice) AS 'Cost' " 
                     cmd = new SqlCommand ("Select site.site_id, max_occupancy,accessible,max_rv_length,utilities" +
-                        "FROM site JOIN reservation ON site.site_id = reservation.reservation_id WHERE campground_id = campgroundChoice AND site.site_id IN(@stringOfSites)", conn);
+                        "FROM site JOIN reservation ON site.site_id = reservation.reservation_id WHERE campground_id = campgroundChoice " +
+                        "AND site.site_id IN(@stringOfSites)", conn);
                     cmd.Parameters.AddWithValue("@campgroundChoice", campgroundChoice);
-                    cmd.Parameters.AddWithValue("@stringOfSites", stringOfSites);
+                    cmd.Parameters.AddWithValue("@stringOfSites", (1, 2, 3)); //"1,2,3" -> 1,2,3 only //stringOfSites availableSites
 
                     SqlDataReader siteReader = cmd.ExecuteReader();
 
