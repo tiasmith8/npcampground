@@ -99,9 +99,49 @@ namespace Capstone
             }
         }
 
+        /// <summary>
+        /// Reserve a campground or return to previous menu
+        /// </summary>
         public void ReservationMenu()
         {
+            Console.WriteLine("\nSelect a Command: ");
+            Console.WriteLine("1) Search for Available Reservation");
+            Console.WriteLine("2) Return to Previous Screen");
+            string reservationChoice = Console.ReadLine();
 
+            while (true)
+            {   //Search for a reservation
+                if (reservationChoice == "1")
+                {
+                    Console.WriteLine("Search for Campground Reservation");
+                    Console.WriteLine("\t\tName     Open        Close       Daily Fee");
+                    //loop through campgrounds again
+                    Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(choice)).Name} National Park Campgrounds");
+                    foreach (Campground campground in campgrounds)
+                    {
+                        Console.WriteLine(campground.ToString());
+                    }
+                    Console.WriteLine("Which campground (enter 0 to cancel)?: ");
+                    string campgroundChoice = Console.ReadLine();
+
+                    Console.WriteLine("What is the arrival date?: ");
+                    string arrivalDateChoice = Console.ReadLine();
+
+                    Console.WriteLine("What is the departure date?: ");
+                    string departureDateChoice = Console.ReadLine();
+
+                    Console.WriteLine("Results Matching Your Search Criteria");
+                    Console.WriteLine("Site No.     Max Occup. Accessible? Max RV Length  Utility  Cost");
+                    //Call SiteSqlDao method to view all campsites at campground
+                    siteDAO.GetAllCampsitesByCampgroundIdAndAvailability(campgroundChoice, arrivalDateChoice, departureDateChoice);
+                }
+
+                else if(reservationChoice == "2")
+                {
+                    break;
+                }
+
+            }
         }
     }
 }
