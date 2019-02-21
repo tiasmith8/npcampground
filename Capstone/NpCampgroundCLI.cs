@@ -61,7 +61,6 @@ namespace Capstone
 
                 //Call command menu (select campground/reservation for here)
                 CampgroundMenu();
-
             }
         }
 
@@ -80,18 +79,29 @@ namespace Capstone
                 if (choice == "3") break;//Return to previous screen
 
                 //View campgrounds in chosen park
-                if (choice == "1")
+                else if (choice == "1")
                 {   //Get a list of all campgrounds
                     IList<Campground> campgrounds = campgroundDAO.GetAllCampgrounds(int.Parse(choice));
                     //Loop to print the campgrounds list
+                    Console.WriteLine();
+                    Console.WriteLine("Park Campgrounds");
+                    Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(choice)).Name} National Park Campgrounds");
                     foreach(Campground campground in campgrounds)
                     {
                         Console.WriteLine(campground.ToString());
                     }
                 }
-                //Then call another menu to choose campground and available dates
-
+                else if (choice == "2")
+                {
+                    //Then call another menu to choose campground and available dates
+                    ReservationMenu();
+                }
             }
+        }
+
+        public void ReservationMenu()
+        {
+
         }
     }
 }
