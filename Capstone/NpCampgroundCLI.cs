@@ -144,7 +144,8 @@ namespace Capstone
                     Console.WriteLine("Results Matching Your Search Criteria");
                     Console.WriteLine("Site No.     Max Occup. Accessible? Max RV Length  Utility  Cost");
 
-                    //Call SiteSqlDao method to view all campsites at campground
+                    //Call SiteDao method to view all campsites at campground
+                    // Returns list of sites. Display list + cost
                     this.Sites = siteDAO.GetAvailableSites(this.CampgroundChoice, arrivalDateChoice, departureDateChoice);
                     DisplayCamgroundSites();
                 }
@@ -171,8 +172,6 @@ namespace Capstone
             {
                 Console.WriteLine(site.ToString());
             }
-        }
-        
-        
+        }    
     }
 }
