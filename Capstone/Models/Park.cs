@@ -28,10 +28,10 @@ namespace Capstone.Models
         public void Display(Park parkChoice)
         {
             Console.WriteLine(Name + " National Park");
-            Console.WriteLine($"{"Location", -1} {parkChoice.Location, 25}");
-            Console.WriteLine($"Established: {parkChoice.EstablishDate, 25}");
-            Console.WriteLine($"Area: {parkChoice.Area, 25}");
-            Console.WriteLine($"Annual Visitors: {parkChoice.Visitors, 25}");
+            Console.WriteLine($"{"Location", -18} {parkChoice.Location,0 }");
+            Console.WriteLine($"{"Established:",-18} {parkChoice.EstablishDate,0}");
+            Console.WriteLine($"{"Area:",-18} {parkChoice.Area,0}");
+            Console.WriteLine($"{"Annual Visitors:",-18} {parkChoice.Visitors,0}");
             Console.WriteLine("\n" + Description + "\n");
         }
     }
