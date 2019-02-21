@@ -32,8 +32,8 @@ namespace Capstone.Models
 
         //Display the campground information
         public override string ToString()
-        {
-            return $"#{CampgroundId.ToString(),-4} {Name,-15}{monthConversion[OpenMonth],-12}{monthConversion[ClosedMonth],-12}{DailyFee:C2}";
+        {   
+            return $"#{CampgroundId.ToString(),-4} {Name,-30}{monthConversion[OpenMonth],-12}{monthConversion[ClosedMonth],-12}{DailyFee:C2}";
         }
     }
 }
