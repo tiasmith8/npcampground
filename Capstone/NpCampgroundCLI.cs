@@ -54,12 +54,15 @@ namespace Capstone
 
                 // Read in user choice
                 this.ParkChoice = Console.ReadLine();
-                if (ParkChoice.ToLower() == "q") break; // Quit if q
+                if (this.ParkChoice.ToLower() == "q") break; // Quit if q
+
+                Console.Clear();
 
                 // After user selects which park to get details on,
                 // Get information on that 1 park choice
-                Park parkChoice = parkDAO.GetParkInfo(int.Parse(ParkChoice));
+                Park parkChoice = parkDAO.GetParkInfo(int.Parse(this.ParkChoice));
                 Console.WriteLine("Park Information");
+
                 //Print info for chosen park
                 parkChoice.Display(parkChoice);
 
@@ -80,22 +83,26 @@ namespace Capstone
 
                 string choice = Console.ReadLine();
 
-                if (choice == "3") break;//Return to previous screen
+                if (choice == "3") { Console.Clear(); break; }//Return to previous screen
 
-                //View campgrounds in chosen park
+                // View campgrounds in chosen park
                 else if (choice == "1")
-                {   //Get a list of all campgrounds
-                    this.Campgrounds = campgroundDAO.GetAllCampgrounds(int.Parse(ParkChoice));
-                    //Loop to print the campgrounds list
+                {
+                    //Get a list of all campgrounds
+                    this.Campgrounds = campgroundDAO.GetAllCampgrounds(int.Parse(this.ParkChoice));
+
                     Console.WriteLine();
                     Console.WriteLine("Park Campgrounds");
-                    Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(ParkChoice)).Name} National Park Campgrounds");
 
-                    DisplayCampgroundInformation(Campgrounds);
+                    Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name} National Park Campgrounds");
+
+                    DisplayCampgroundInformation();
                 }
                 else if (choice == "2")
                 {
-                    //Then call another menu to choose campground and available dates
+                    Console.Clear();
+
+                    // Then call another menu to choose campground and available dates
                     ReservationMenu();
                 }
             }
@@ -106,6 +113,8 @@ namespace Capstone
         /// </summary>
         public void ReservationMenu()
         {
+            DisplayCampgroundInformation();
+
             Console.WriteLine("\nSelect a Command: ");
             Console.WriteLine("1) Search for Available Reservation");
             Console.WriteLine("2) Return to Previous Screen");
@@ -116,10 +125,8 @@ namespace Capstone
                 if (reservationChoice == "1")
                 {
                     Console.WriteLine("Search for Campground Reservation");
-                    Console.WriteLine("\t\tName     Open        Close       Daily Fee");
-                    //loop through campgrounds again
-                    //Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(choice)).Name} National Park Campgrounds");
-                    DisplayCampgroundInformation(Campgrounds);
+
+                    Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name} National Park Campgrounds");
 
                     Console.WriteLine("Which campground (enter 0 to cancel)?: ");
                     string campgroundChoice = Console.ReadLine();
@@ -140,13 +147,13 @@ namespace Capstone
                 {
                     break;
                 }
-
             }
         }
 
-        public void DisplayCampgroundInformation(IList<Campground> campgrounds)
+        public void DisplayCampgroundInformation()
         {
-            foreach (Campground campground in campgrounds)
+            Console.WriteLine("\t\tName     Open        Close       Daily Fee");
+            foreach (Campground campground in this.Campgrounds)
             {
                 Console.WriteLine(campground.ToString());
             }
