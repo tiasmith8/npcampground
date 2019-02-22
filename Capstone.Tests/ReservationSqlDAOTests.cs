@@ -24,7 +24,7 @@ namespace Capstone.Tests
 
             int resID = dao.CreateReservation(reservation.Site_Id, reservation.Name, reservation.From_Date, reservation.To_Date, reservation.Create_date);
 
-            Assert.AreEqual(resID, NewReservationId);
+            Assert.AreEqual(resID, NewReservationId+1);
         }
     }
 }
