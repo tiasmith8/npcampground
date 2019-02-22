@@ -12,7 +12,7 @@ namespace Capstone.Tests
     {
 
         [TestMethod]
-        public void GetAllParks()
+        public void GetAllParksReturnsOnePark()
         {
             //Arrange
             ParkSqlDAO parkDao = new ParkSqlDAO(ConnectionString);
