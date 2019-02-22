@@ -17,6 +17,8 @@ namespace Capstone.Tests
         /// </summary>
         protected int NewReservationId { get; private set; }
 
+        protected int NewParkId { get; private set; }
+
         /// <summary>
         /// The transaction for each test.
         /// </summary>
@@ -42,6 +44,7 @@ namespace Capstone.Tests
                 if (reader.Read())
                 {
                     this.NewReservationId = Convert.ToInt32(reader["newReservationId"]);
+                    this.NewParkId = Convert.ToInt32(reader["newParkId"]);
                 }
             }
         }

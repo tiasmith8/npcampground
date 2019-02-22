@@ -22,4 +22,5 @@ DECLARE @reservationId int = (SELECT @@IDENTITY);
 
 -- Return reservation ID
 SELECT @reservationId as reservationId;
+SELECT @parkId as parkId;
 
