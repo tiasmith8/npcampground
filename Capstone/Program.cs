@@ -25,7 +25,7 @@ namespace Capstone
             ISiteSqlDAO         siteDAO        = new SiteSqlDAO(connectionString);
             IReservationSqlDAO  reservationDAO = new ReservationSqlDAO(connectionString);
             
-            // Instantiate menu class for entire program
+            // Instantiate menu class for entire program and send it the data access objects
             NpCampgroundCLI cli = new NpCampgroundCLI(parkDAO, campgroundDAO, siteDAO, reservationDAO);
             //Console menu entry point
             cli.Run();
@@ -37,7 +37,7 @@ namespace Capstone
 
 //TODO
 /* Catch incorrect input to menus (not 1, 2, 3) - In progress
- * Create unit tests for entire application
+ * Create unit tests for entire application - not possible
  * Add user authentication/login
  * Look at Bonus
  */

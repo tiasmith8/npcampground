@@ -11,13 +11,10 @@ namespace Capstone
         private string ConnectionString { get; } //Save database connection information(server name, db name)
 
         private IList<Campground> Campgrounds = new List<Campground>();
-
         private IList<Site> Sites = new List<Site>();
 
         private string ParkChoice { get; set; }
-
         private int CampgroundChoice { get; set; }
-
         private decimal CampGroundFee { get; set; }
 
         private IParkSqlDAO parkDAO;
@@ -104,7 +101,7 @@ namespace Capstone
                 // View campgrounds in chosen park
                 else if (choice == "1")
                 {
-                    Console.WriteLine();
+                    Console.Clear();
                     Console.WriteLine("Park Campgrounds");
 
                     Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name} National Park Campgrounds");
@@ -147,6 +144,8 @@ namespace Capstone
                     Console.WriteLine("Which campground (enter 0 to cancel)?: ");
                     this.CampgroundChoice = int.Parse(Console.ReadLine());
                     this.CampGroundFee = Campgrounds[CampgroundChoice].DailyFee;
+
+                    //Want to get the campgroundFee based off of 
 
                     if (CampgroundChoice == 0) break;
 
