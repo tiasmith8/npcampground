@@ -29,23 +29,15 @@ namespace Capstone
             NpCampgroundCLI cli = new NpCampgroundCLI(parkDAO, campgroundDAO, siteDAO, reservationDAO);
             //Console menu entry point
             cli.Run();
+
         }
     }
 }
 
 
 //TODO
-/* Delete MainMenu.cs since we have NpCampgroundCLI.cs now and don't need it (same code) - done
- * Catch incorrect input to menus (not 1, 2, 3)
- * Fix spacing/padding for printing campgrounds and parks in Models->Campground ToString method
- * Fix spacing/padding in Models-> Park
- * Create ToString method overrides for Reservation model and Site model
- * Convert number months to name values
- * Create integration unit tests for the sqldao classes
+/* Catch incorrect input to menus (not 1, 2, 3)
  * Create unit tests for entire application
- * Fill out IReservation interface based on UML (methods)
- * Fill out ISite based on UML (methods)
- * Continue ICampground interface definition
  * Add user authentication/login
  * Look at Bonus
  */

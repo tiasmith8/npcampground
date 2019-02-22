@@ -42,30 +42,37 @@ namespace Capstone
 
         public void Run()
         {
+            //Account for can't parse string that isn't a number
+            int tryParseInt;
+
             // Main menu - run until user types in Q
             while (true)
             {
-                Console.WriteLine("Select from parks to view details");
-
                 // Get a list of parks: Call method to query db table: park for all entries
                 IList<Park> parks = parkDAO.GetAllParks();
 
-                // Loop through parks list returned and print out all the available parks
-                foreach(Park park in parks)
+                do
                 {
-                    Console.WriteLine(park.ToString());
+                    Console.WriteLine("Select from parks to view details");
+
+                    // Loop through parks list returned and print out all the available parks
+                    foreach (Park park in parks)
+                    {
+                        Console.WriteLine(park.ToString());
+                    }
+                    // Option for user to quit
+                    Console.WriteLine("(Q) Quit");
+
+                    // Read in user choice
+                    this.ParkChoice = Console.ReadLine();
+
+                    if (this.ParkChoice.ToLower() == "q") break; // Quit if q
+
+                    Console.Clear();
+
                 }
-                // Option for user to quit
-                Console.WriteLine("(Q) Quit");
+                while (int.TryParse(this.ParkChoice, out tryParseInt) == false);
 
-                // Read in user choice
-                this.ParkChoice = Console.ReadLine();
-                if (this.ParkChoice.ToLower() == "q") break; // Quit if q
-
-                Console.Clear();
-
-                // After user selects which park to get details on,
-                // Get information on that 1 park choice
                 Park parkChoice = parkDAO.GetParkInfo(int.Parse(this.ParkChoice));
                 Console.WriteLine("Park Information");
 
