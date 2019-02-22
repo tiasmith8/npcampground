@@ -21,5 +21,4 @@ INSERT INTO reservation VALUES (@siteId,'Ken','2019-03-03','2019-05-01','2019-02
 DECLARE @reservationId int = (SELECT @@IDENTITY);
 
 -- Return reservation ID
-SELECT @reservationId as reservationId;
-SELECT @parkId as parkId;
+SELECT @reservationId as reservationId, @parkID as parkId;
