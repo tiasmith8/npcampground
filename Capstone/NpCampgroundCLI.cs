@@ -136,6 +136,7 @@ namespace Capstone
 
                     Console.WriteLine("Which campground (enter 0 to cancel)?: ");
                     this.CampgroundChoice = int.Parse(Console.ReadLine());
+                    this.CampGroundFee = Campgrounds[CampgroundChoice].DailyFee;
 
                     if (CampgroundChoice == 0) break;
 
@@ -146,7 +147,7 @@ namespace Capstone
                     DateTime departureDateChoice = DateTime.Parse(Console.ReadLine());
 
                     Console.WriteLine("Results Matching Your Search Criteria");
-                    Console.WriteLine("Site No.     Max Occup. Accessible? Max RV Length  Utility  Total Cost");
+                    Console.WriteLine($"{"Site No.",-5}{"Max Occup.",10}{"Accessible?",10}{"Max RV Length",10}{"Utility",10}{"Total Cost",10}");
 
                     //Call SiteDao method to view all campsites at campground
                     // Returns list of sites. Display list + cost
@@ -161,6 +162,7 @@ namespace Capstone
                         else break;
                     }
           
+                    // Display available sites and pass in number of days in reservation to calculate total cost
                     DisplayCamgroundSites((departureDateChoice - arrivalDateChoice).Days);
 
                     Console.WriteLine("Which site should be reserved (enter 0 to cancel)? ");
@@ -184,10 +186,9 @@ namespace Capstone
 
         public void DisplayCampgroundInformation()
         {
-            Console.WriteLine("\t\tName     Open        Close       Daily Fee");
+            Console.WriteLine($"{"Site No.",-5}{"Name",8}{"Open",20}{"Close",16}{"Daily Fee",10}");
             foreach (Campground campground in this.Campgrounds)
             {
-                this.CampGroundFee = campground.DailyFee;
                 Console.WriteLine(campground.ToString());
             }
         }

@@ -16,7 +16,7 @@ namespace Capstone.Models
 
         public override string ToString()
         {
-            return $"#{Site_id,-4} {Max_Occupancy,-30}{Accessible,-12}{Max_Rv_Length,-12}{Utilities}";
+            return $"#{Site_id,-10}{Max_Occupancy,-10}{Accessible,-12}{Max_Rv_Length,-12}{Utilities,-7}";
         }
     }
 
