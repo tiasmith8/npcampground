@@ -15,7 +15,7 @@ namespace Capstone.Tests
         public void GetAllCampground_ReturnsNumberOfCampgrounds()
         {
             CampgroundSqlDAO dao = new CampgroundSqlDAO(ConnectionString);
-            IList<Campground> campgrounds = dao.GetAllCampgrounds(parkId);
+            IList<Campground> campgrounds = dao.GetAllCampgrounds(NewParkId);
             Assert.AreEqual(1, campgrounds.Count);
         }
     }
