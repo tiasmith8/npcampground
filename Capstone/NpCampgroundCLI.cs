@@ -148,11 +148,8 @@ namespace Capstone
 
                     if (CampgroundChoice == 0) break;
 
-                    Console.WriteLine("What is the arrival date?: ");
-                    DateTime arrivalDateChoice = DateTime.Parse(Console.ReadLine());
-
-                    Console.WriteLine("What is the departure date?: ");
-                    DateTime departureDateChoice = DateTime.Parse(Console.ReadLine());
+                    DateTime arrivalDateChoice = ValidateInput.GetDate("What is the arrival date?");
+                    DateTime departureDateChoice = ValidateInput.GetDate("What is the departure date?");
 
                     Console.WriteLine("Results Matching Your Search Criteria");
                     Console.WriteLine($"{"Site No.",-5}{"Max Occup.",10}{"Accessible?",10}{"Max RV Length",10}{"Utility",10}{"Total Cost",10}");
