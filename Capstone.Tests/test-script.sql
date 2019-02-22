@@ -9,7 +9,7 @@ INSERT INTO park VALUES ('Tia Noah Land','The Moon','1701-01-01',10000,2,'The mo
 DECLARE @parkID int = (SELECT @@IDENTITY);
 
 -- INSERT sample campground
-INSERT INTO campground VALUES (@parkID,'moon side',01,08,4200.00)
+INSERT INTO campground VALUES (@parkID,'moon side',1,8,4200.00)
 DECLARE @campgroundID int = (SELECT @@IDENTITY);
 
 -- INSERT sample site
@@ -21,4 +21,8 @@ INSERT INTO reservation VALUES (@siteId,'Ken','2019-03-03','2019-05-01','2019-02
 DECLARE @reservationId int = (SELECT @@IDENTITY);
 
 -- Return reservation ID
+<<<<<<< HEAD
 SELECT @reservationId as reservationId, @parkId as parkId, @campgroundID as campgroundId, @siteId as siteId;
+=======
+SELECT @reservationId as reservationId, @parkId as parkId, @campgroundID as campgroundId;
+>>>>>>> f60235a3f922e09e8193f645713a5eb6f73e346f
