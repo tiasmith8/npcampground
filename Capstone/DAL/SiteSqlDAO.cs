@@ -89,5 +89,39 @@ namespace Capstone.DAL
             }
             return siteFee;
         }
+
+        public IList<Reservation> GetReservationsNext30Days(int campgroundChoice)
+        {
+            List<Reservation> reservations = new List<Reservation>();
+
+            DateTime now = DateTime.Now;
+
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand("Select reservation_id,name,from_date,to_date " +
+                    "JOIN site ON reservation.site_id = site.site_id FROM reservation WHERE from_date >= @now AND to_date <= @nowPlus30" +
+                    "AND site.campground_id = @campgroundChoice", conn);
+                cmd.Parameters.AddWithValue("@now", now);
+                cmd.Parameters.AddWithValue("@nowPlus30", now.AddDays(30));
+                cmd.Parameters.AddWithValue("@campgroundChoice", campgroundChoice);
+
+                SqlDataReader reader = cmd.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    Reservation reservation = new Reservation();
+                    reservation.Reservation_Id = Convert.ToInt32(reader["reservation_id"]);
+                    reservation.Name = Convert.ToString(reader["name"]);
+                    reservation.From_Date = Convert.ToDateTime(reader["from_date"]);
+                    reservation.To_Date = Convert.ToDateTime(reader["to_date"]);
+
+                    reservations.Add(reservation);
+                }
+            }
+
+            return reservations;
+        }
     }
 }
