@@ -132,7 +132,7 @@ namespace Capstone
             Console.WriteLine($"Upcoming Reservations for: {parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name} National Park Campgrounds");
             Console.WriteLine();
             //Make a call that returns a list of reservations
-            IList<Reservation> upcomingReservations = GetReservationsNext30Days(this.ParkChoice);
+            IList<Reservation> upcomingReservations = siteDAO.GetReservationsNext30Days(int.Parse(this.ParkChoice));
 
             //Header
             Console.WriteLine("ReservationID\t Name\t ArrivalDate\t Departure Date");
