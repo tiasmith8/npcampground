@@ -1,8 +1,8 @@
 ﻿-- DELETE DATABASE DATA
-DELETE FROM park
-DELETE FROM campground
-DELETE FROM site
-DELETE FROM reservation
+DELETE FROM reservation;
+DELETE FROM [site];
+DELETE FROM campground;
+DELETE FROM park;
 
 -- INSERT sample park
 INSERT INTO park VALUES ('Tia Noah Land','The Moon','1701-01-01',10000,2,'The moon oh moon what can I say oh moon? Tis dark and spacy and glorious to behold. Twas a sky twas a night to whit to woo oh what a moon!')
@@ -23,4 +23,3 @@ DECLARE @reservationId int = (SELECT @@IDENTITY);
 -- Return reservation ID
 SELECT @reservationId as reservationId;
 SELECT @parkId as parkId;
-
