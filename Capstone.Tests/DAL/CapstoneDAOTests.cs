@@ -52,10 +52,6 @@ namespace Capstone.Tests
                     this.NewParkId = Convert.ToInt32(reader["parkId"]);
                     this.NewCampgroundId = Convert.ToInt32(reader["campgroundId"]);
                     this.SiteId = Convert.ToInt32(reader["siteId"]);
-<<<<<<< HEAD
-=======
-
->>>>>>> 9f1b6bf047fc6da3e97d9f61cffa95343cd6ba08
                 }
             }
         }

@@ -86,6 +86,9 @@ namespace Capstone
 
         public void CampgroundMenu()
         {
+            // create list of campgrounds
+            this.Campgrounds = campgroundDAO.GetAllCampgrounds(int.Parse(this.ParkChoice));
+
             //Run until user chooses 3 to return to main menu
             while (true)
             {
@@ -101,9 +104,6 @@ namespace Capstone
                 // View campgrounds in chosen park
                 else if (choice == "1")
                 {
-                    //Get a list of all campgrounds
-                    this.Campgrounds = campgroundDAO.GetAllCampgrounds(int.Parse(this.ParkChoice));
-
                     Console.WriteLine();
                     Console.WriteLine("Park Campgrounds");
 
@@ -126,15 +126,18 @@ namespace Capstone
         /// </summary>
         public void ReservationMenu()
         {
-            DisplayCampgroundInformation();
+            string reservationChoice = string.Empty;
 
-            Console.WriteLine("\nSelect a Command: ");
-            Console.WriteLine("1) Search for Available Reservation");
-            Console.WriteLine("2) Return to Previous Screen");
-            string reservationChoice = Console.ReadLine();
+            do
+            { 
+                DisplayCampgroundInformation();
 
-            while (true)
-            {   //Search for a reservation
+                Console.WriteLine("\nSelect a Command: ");
+                Console.WriteLine("1) Search for Available Reservation");
+                Console.WriteLine("2) Return to Previous Screen");
+                reservationChoice = Console.ReadLine();
+
+                //Search for a reservation
                 if (reservationChoice == "1")
                 {
                     Console.WriteLine("Search for Campground Reservation");
@@ -168,7 +171,7 @@ namespace Capstone
                         if (choice.ToLower() == "y") ReservationMenu();
                         else break;
                     }
-          
+
                     // Display available sites and pass in number of days in reservation to calculate total cost
                     DisplayCamgroundSites((departureDateChoice - arrivalDateChoice).Days);
 
@@ -180,15 +183,15 @@ namespace Capstone
                     Console.WriteLine("What name shoudl the reservation be made under? ");
                     string reservationName = Console.ReadLine();
 
-                    int reservationID = reservationDAO.CreateReservation(int.Parse(siteReservation), reservationName,arrivalDateChoice,departureDateChoice,DateTime.Now);
+                    int reservationID = reservationDAO.CreateReservation(int.Parse(siteReservation), reservationName, arrivalDateChoice, departureDateChoice, DateTime.Now);
                     Console.WriteLine($"The reservation has been made and the confirmation ID is {reservationID}");
                 }
 
-                else if(reservationChoice == "2")
+                else if (reservationChoice == "2")
                 {
                     break;
                 }
-            }
+            } while (reservationChoice != "1" || reservationChoice != "2");
         }
 
         public void DisplayCampgroundInformation()
