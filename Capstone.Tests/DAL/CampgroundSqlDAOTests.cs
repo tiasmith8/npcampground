@@ -1,9 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Capstone.DAL;
 using Capstone.Models;
+using Capstone.Tests;
 
 namespace Capstone.Tests
 {

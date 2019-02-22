@@ -3,6 +3,7 @@ using System;
 using System.Data.SqlClient;
 using System.IO;
 using System.Transactions;
+using Capstone.Tests;
 
 namespace Capstone.Tests
 {
@@ -43,9 +44,14 @@ namespace Capstone.Tests
                 // If there is a row to read
                 while (reader.Read())
                 {
+<<<<<<< HEAD
                     this.NewParkId = Convert.ToInt32(reader["parkId"]);
                     this.NewReservationId = Convert.ToInt32(reader["reservationId"]);
                     
+=======
+                    this.NewReservationId = Convert.ToInt32(reader["reservationId"]);
+                    this.NewParkId = Convert.ToInt32(reader["parkId"]);
+>>>>>>> c06a20bfd55c8dd682131022674cc2b596048685
                 }
             }
         }
