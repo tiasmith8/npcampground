@@ -10,6 +10,8 @@ namespace Capstone.DAL
     {
         private string ConnectionString { get; }
 
+        protected int CampgroundChoice { get; set; }
+
         public SiteSqlDAO(string connectionString)
         {
             this.ConnectionString = connectionString;
@@ -17,6 +19,7 @@ namespace Capstone.DAL
 
         public IList<Site> GetAvailableSites(int campgroundChoice, DateTime arrivalDateChoice, DateTime departureDateChoice)
         {
+            this.CampgroundChoice = campgroundChoice;
             IList<Site> returnSites = new List<Site>();
 
             try
@@ -42,6 +45,7 @@ namespace Capstone.DAL
                         Site site = ConvertReadertoSite(reader);
                         returnSites.Add(site);
                     }
+                    reader.Close();
                 }
             }
 
@@ -66,6 +70,23 @@ namespace Capstone.DAL
             site.Utilities = Convert.ToBoolean(reader["utilities"]);
 
             return site;
+        }
+
+        public decimal GetSiteFee()
+        {
+            decimal siteFee = 0;
+
+            using (SqlConnection conn = new SqlConnection(ConnectionString))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand("SELECT campground.daily_fee FROM campground " +
+                            "JOIN site ON campground.campground_id = site.campground_id " +
+                            "WHERE campground.campground_id = @campgroundChoice;", conn);
+                cmd.Parameters.AddWithValue("@campgroundChoice", CampgroundChoice);
+
+                siteFee = Convert.ToDecimal(cmd.ExecuteScalar());
+            }
+            return siteFee;
         }
     }
 }

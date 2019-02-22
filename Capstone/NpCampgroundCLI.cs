@@ -146,7 +146,6 @@ namespace Capstone
 
                     Console.WriteLine("Which campground (enter 0 to cancel)?: ");
                     this.CampgroundChoice = int.Parse(Console.ReadLine());
-                    this.CampGroundFee = Campgrounds[CampgroundChoice].DailyFee;
 
                     if (CampgroundChoice == 0) break;
 
@@ -205,9 +204,11 @@ namespace Capstone
 
         public void DisplayCamgroundSites(int days)
         {
+            decimal fee = siteDAO.GetSiteFee();
+
             foreach(Site site in Sites)
             {
-                Console.WriteLine($"{site.ToString()} {this.CampGroundFee * days:C2}");
+                Console.WriteLine($"{site.ToString()} {fee*days:C2}");
             }
         }    
     }
