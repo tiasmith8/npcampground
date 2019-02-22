@@ -92,11 +92,12 @@ namespace Capstone
                 Console.WriteLine("Select a Command");
                 Console.WriteLine("1) View Campgrounds");
                 Console.WriteLine("2) Search for Reservation");
-                Console.WriteLine("3) Return to Previous Screen");
+                Console.WriteLine("3) View All Upcoming Reservations");
+                Console.WriteLine("4) Return to Previous Screen");
 
                 string choice = Console.ReadLine();
 
-                if (choice == "3") { Console.Clear(); break; }//Return to previous screen
+                if (choice == "4") { Console.Clear(); break; }//Return to previous screen
 
                 // View campgrounds in chosen park
                 else if (choice == "1")
@@ -115,7 +116,35 @@ namespace Capstone
                     // Then call another menu to choose campground and available dates
                     ReservationMenu();
                 }
+
+                //Choice to view all upcoming reservations for the chosen park
+                //chosen park id: parkChoice
+                else if (choice == "3")
+                {
+                    UpcomingReservationsMenu();
+                }
             }
+        }
+
+        private void UpcomingReservationsMenu()
+        {
+            Console.Clear();
+            Console.WriteLine($"Upcoming Reservations for: {parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name} National Park Campgrounds");
+            Console.WriteLine();
+            //Make a call that returns a list of reservations
+            IList<Reservation> upcomingReservations = GetReservationsNext30Days(this.ParkChoice);
+
+            //Header
+            Console.WriteLine("ReservationID\t Name\t ArrivalDate\t Departure Date");
+
+            //Now print the list
+            foreach(Reservation reservation in upcomingReservations)
+            {
+                ////Reservation Id, Name, FromDate, ToDate of Rerservation
+                Console.WriteLine($"{reservation.Reservation_Id}\t{reservation.Name}\t" +
+                    $"{reservation.From_Date}\t{reservation.To_Date}" );
+            }
+
         }
 
         /// <summary>
