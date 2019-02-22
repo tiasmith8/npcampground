@@ -36,7 +36,7 @@ namespace Capstone
 
 
 //TODO
-/* Catch incorrect input to menus (not 1, 2, 3)
+/* Catch incorrect input to menus (not 1, 2, 3) - In progress
  * Create unit tests for entire application
  * Add user authentication/login
  * Look at Bonus
