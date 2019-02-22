@@ -9,6 +9,8 @@ namespace Capstone.DAL
     {
         IList<Site> GetAvailableSites(int campgroundID, DateTime arrivalDateChoice, DateTime departureDateChoice);
 
+        IList<Reservation> GetReservationsNext30Days(int campgroundChoice);
+
         decimal GetSiteFee();
     }
 }
