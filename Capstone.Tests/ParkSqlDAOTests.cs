@@ -23,12 +23,20 @@ namespace Capstone.Tests
 
             //Assert
             Assert.AreEqual(1, parks.Count);
-
         }
 
+        [TestMethod]
+        public void GetAllParkInfo_Returns_OnePark()
+        {
+            //Arrange - create park data access object
+            ParkSqlDAO parkDao = new ParkSqlDAO(ConnectionString);
+            Park park = new Park();
 
+            //Act - Get the park created in test-script
+            park = parkDao.GetParkInfo(NewParkId);
 
-
-
+            //Assert - check fake name matches return name
+            Assert.AreEqual("Tia Noah Land", park.Name);
+        }
     }
 }
