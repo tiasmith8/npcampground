@@ -66,7 +66,7 @@ namespace Capstone
                     // Read in user choice
                     this.ParkChoice = Console.ReadLine();
 
-                    if (this.ParkChoice.ToLower() == "q") break; // Quit if q
+                    if (this.ParkChoice.ToLower() == "q") return; // Quit if q
 
                     Console.Clear();
 
