@@ -42,7 +42,7 @@ namespace Capstone.Tests
                 SqlDataReader reader = cmd.ExecuteReader();
 
                 // If there is a row to read
-                while (reader.Read())
+                if (reader.Read())
                 {
                     this.NewReservationId = Convert.ToInt32(reader["reservationId"]);
                     this.NewParkId = Convert.ToInt32(reader["parkId"]);
