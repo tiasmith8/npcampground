@@ -101,7 +101,7 @@ namespace Capstone.DAL
                 conn.Open();
 
                 SqlCommand cmd = new SqlCommand("Select reservation_id,name,from_date,to_date " +
-                    "JOIN site ON reservation.site_id = site.site_id FROM reservation WHERE from_date >= @now AND to_date <= @nowPlus30" +
+                    "FROM reservation JOIN site ON reservation.site_id = site.site_id WHERE from_date >= @now AND to_date <= @nowPlus30 " +
                     "AND site.campground_id = @campgroundChoice", conn);
                 cmd.Parameters.AddWithValue("@now", now);
                 cmd.Parameters.AddWithValue("@nowPlus30", now.AddDays(30));
