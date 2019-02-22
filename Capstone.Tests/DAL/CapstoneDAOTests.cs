@@ -22,11 +22,7 @@ namespace Capstone.Tests
 
         protected int NewCampgroundId { get; private set; }
 
-<<<<<<< HEAD
         protected int SiteId { get; private set; }
-=======
-        protected int SiteId { get; set; }
->>>>>>> f60235a3f922e09e8193f645713a5eb6f73e346f
 
         /// <summary>
         /// The transaction for each test.
@@ -56,10 +52,7 @@ namespace Capstone.Tests
                     this.NewParkId = Convert.ToInt32(reader["parkId"]);
                     this.NewCampgroundId = Convert.ToInt32(reader["campgroundId"]);
                     this.SiteId = Convert.ToInt32(reader["siteId"]);
-<<<<<<< HEAD
 
-=======
->>>>>>> f60235a3f922e09e8193f645713a5eb6f73e346f
                 }
             }
         }
