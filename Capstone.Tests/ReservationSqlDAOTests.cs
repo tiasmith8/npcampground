@@ -22,9 +22,14 @@ namespace Capstone.Tests
             reservation.Name = "Noah";
             reservation.Site_Id = SiteId;
 
+            int startingRowCount = GetRowCount("reservation");
+
             int resID = dao.CreateReservation(reservation.Site_Id, reservation.Name, reservation.From_Date, reservation.To_Date, reservation.Create_date);
 
+            int endingRowCount = GetRowCount("reservation");
+
             Assert.AreEqual(resID, NewReservationId+1);
+            Assert.AreNotEqual(startingRowCount, endingRowCount);
         }
     }
 }
