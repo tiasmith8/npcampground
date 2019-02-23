@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Capstone.DAL;
 using Capstone.Models;
+using System.Linq;
 
 namespace Capstone
 {
@@ -173,9 +174,13 @@ namespace Capstone
                     Console.WriteLine("Which campground (enter 0 to cancel)?: ");
                     this.CampgroundChoice = int.Parse(Console.ReadLine());
 
-                    //Want to get the campgroundFee based off of 
+                    if (!Campgrounds.Any(var => var.CampgroundId == CampgroundChoice))
+                    {
+                        Console.WriteLine("Site does not exist!");
+                        break;
+                    } 
 
-                    if (CampgroundChoice == 0) break;
+                    else if (CampgroundChoice == 0) break;
 
                     DateTime arrivalDateChoice = ValidateInput.GetDate("What is the arrival date?");
                     DateTime departureDateChoice = ValidateInput.GetDate("What is the departure date?");
