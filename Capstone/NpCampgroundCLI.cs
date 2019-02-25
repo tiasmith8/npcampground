@@ -142,21 +142,19 @@ namespace Capstone
             Console.Clear();
             Console.WriteLine($"Upcoming Reservations for: {parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name} National Park Campgrounds");
             Console.WriteLine();
-            //Make a call that returns a list of reservations
+            // Make a call that returns a list of reservations
             IList<Reservation> upcomingReservations = siteDAO.GetReservationsNext30Days(int.Parse(this.ParkChoice));
 
-            //Header
+            // Header
             Console.WriteLine($"ReservationID\t {"Name", 5}{"ArrivalDate", 37} {"Departure Date", 26}");
 
             //Now print the list
             foreach(Reservation reservation in upcomingReservations)
             {   
-                ////Reservation Id, Name, FromDate, ToDate of Rerservation
+                // Reservation Id, Name, FromDate, ToDate of Rerservation
                 Console.WriteLine($"{reservation.Reservation_Id}\t{reservation.Name, 35}\t" +
                     $"{reservation.From_Date}\t{reservation.To_Date}" );
             }
-            //Console.WriteLine($"{"Site No.",-5}{"Max Occup.",10}{"Accessible?",10}{"Max RV Length",10}{"Utility",10}{"Total Cost",10}");
-
         }
 
         /// <summary>
@@ -183,11 +181,27 @@ namespace Capstone
                     Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name} National Park Campgrounds");
 
                     Console.WriteLine("Which campground (enter 0 to cancel)?: ");
-                    this.CampgroundChoice = int.Parse(Console.ReadLine());
 
+                    //Need to check for invalid input
+                    int tryParse = 0;
+                    string input = Console.ReadLine();
+                    bool isValid = int.TryParse(input, out tryParse);
+
+                    if (!isValid)
+                    {
+                        Console.WriteLine("Invalid input");
+                        Console.ReadLine();
+                        Console.Clear();
+                        break;
+                    } //If user doesn't enter a number
+                    this.CampgroundChoice = int.Parse(input);
+
+                    //If an integer was read in, but it's not in the list then break
                     if (!Campgrounds.Any(var => var.CampgroundId == CampgroundChoice))
                     {
                         Console.WriteLine("Site does not exist!");
+                        Console.ReadLine();
+                        Console.Clear();
                         break;
                     } 
 
@@ -205,20 +219,26 @@ namespace Capstone
 
                     if (this.Sites.Count == 0)
                     {
-                        Console.WriteLine("No sites available for given dates, chooise new dates [y/n]");
+                        Console.WriteLine("No sites available for given dates, choose new dates [y/n]");
                         string choice = Console.ReadLine();
 
-                        if (choice.ToLower() == "y") ReservationMenu();
+                        if (choice.ToLower() == "y")
+                        {
+                            Console.Clear();
+                            ReservationMenu();
+                        }
                         else break;
                     }
 
                     // Display available sites and pass in number of days in reservation to calculate total cost
-                    DisplayCamgroundSites((departureDateChoice - arrivalDateChoice).Days);
+                    int numOfSites = DisplayCamgroundSites((departureDateChoice - arrivalDateChoice).Days);
 
                     Console.WriteLine("Which site should be reserved (enter 0 to cancel)? ");
                     string siteReservation = Console.ReadLine();
 
-                    if (siteReservation == "0") break;
+                    //Check for valid site info
+                    if (siteReservation == "0" || int.TryParse(siteReservation, out tryParse) || int.Parse(siteReservation) < 0 || int.Parse(siteReservation) > numOfSites)
+                        break;
 
                     Console.WriteLine("What name should the reservation be made under? ");
                     string reservationName = Console.ReadLine();
@@ -229,6 +249,7 @@ namespace Capstone
 
                 else if (reservationChoice == "2")
                 {
+                    Console.Clear();
                     break;
                 }
             } while (reservationChoice != "1" || reservationChoice != "2");
@@ -246,7 +267,7 @@ namespace Capstone
             }
         }
 
-        public void DisplayCamgroundSites(int days)
+        public int DisplayCamgroundSites(int days)
         {
             decimal fee = siteDAO.GetSiteFee();
 
@@ -254,6 +275,7 @@ namespace Capstone
             {
                 Console.WriteLine($"{site.ToString()} {fee*days:C2}");
             }
+            return Sites.Count; //return number of sites
         }    
     }
 }
