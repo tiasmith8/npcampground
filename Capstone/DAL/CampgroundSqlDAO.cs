@@ -15,6 +15,11 @@ namespace Capstone.DAL
             this.ConnectionString = connectionString;
         }
     
+        /// <summary>
+        /// Return a list of campgrounds based on the parkID chosen in menu 1.
+        /// </summary>
+        /// <param name="parkId"></param>
+        /// <returns></returns>
         public IList<Campground> GetAllCampgrounds(int parkId)
         {
             List<Campground> campgrounds = new List<Campground>();
@@ -47,6 +52,11 @@ namespace Capstone.DAL
             return campgrounds;
         }
 
+        /// <summary>
+        /// Convert a db row returned to a campground object.
+        /// </summary>
+        /// <param name="reader"></param>
+        /// <returns></returns>
         private Campground ConvertReaderToCampgrounds(SqlDataReader reader)
         {
             Campground campground = new Campground();
@@ -58,7 +68,6 @@ namespace Capstone.DAL
             campground.DailyFee = Convert.ToDecimal(reader["daily_fee"]);
 
             return campground;
-
         }
     }
 }

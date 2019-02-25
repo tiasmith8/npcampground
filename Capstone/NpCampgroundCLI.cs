@@ -9,12 +9,12 @@ namespace Capstone
 {
     public class NpCampgroundCLI
     {
-        //Properties
+        // Properties
         private string ConnectionString { get; } //Save database connection information(server name, db name)
         private string ParkChoice { get; set; } //Holds which park the user chooses
         private int CampgroundChoice { get; set; } //Holds the chosen campground number
 
-        //Variables
+        // Variables
         private IList<Campground> Campgrounds = new List<Campground>();
         private IList<Site> Sites = new List<Site>();
 
@@ -38,10 +38,10 @@ namespace Capstone
             this.reservationDAO = reservationDAO;
         }
 
-        //Starting point of the program. First shows all parks in the system.
+        // Starting point of the program. First shows all parks in the system.
         public void Run()
         {
-            //Account for can't parse string that isn't a number
+            // Account for can't parse string that isn't a number
             int tryParseInt;
 
             // Main menu - run until user types in Q
@@ -71,32 +71,37 @@ namespace Capstone
 
                     Console.Clear();
 
-                } //while input is not valid, continue to prompt user to choose a valid park
+                } // while input is not valid, continue to prompt user to choose a valid park
                 while ((int.TryParse(this.ParkChoice, out tryParseInt) == false) || int.Parse(ParkChoice) <= 0 || int.Parse(ParkChoice) > numberOfParks);
 
+                // Save the chosen park here
                 Park parkChoice = parkDAO.GetParkInfo(int.Parse(this.ParkChoice));
                 Console.WriteLine("Park Information");
 
-                //Print info for chosen park
+                // Print info for chosen park
                 parkChoice.Display(parkChoice);
 
-                //Call command menu (select campground/reservation for here)
+                // Call command menu (select campground/reservation for here)
                 CampgroundMenu();
             }
         }
 
+        // 2nd menu
         public void CampgroundMenu()
         {
             // create list of campgrounds
             this.Campgrounds = campgroundDAO.GetAllCampgrounds(int.Parse(this.ParkChoice));
 
-            //Run until user chooses 3 to return to main menu
+            // Saves park name to a variable to be used in menu options
+            string parkName = parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name;
+
+            // Run until user chooses 3 to return to main menu
             while (true)
             {
-                Console.WriteLine("Select a Command");
-                Console.WriteLine("1) View Campgrounds");
-                Console.WriteLine("2) Search for Reservation");
-                Console.WriteLine("3) View All Upcoming Reservations");
+                Console.WriteLine("Select an Option:");
+                Console.WriteLine($"1) View Campgrounds for {parkName}");
+                Console.WriteLine($"2) Search for a Reservation at {parkName}");
+                Console.WriteLine($"3) View All Upcoming Reservations for {parkName}");
                 Console.WriteLine("4) Return to Previous Screen");
 
                 string choice = Console.ReadLine();
@@ -108,11 +113,13 @@ namespace Capstone
                 {
                     Console.Clear();
                     Console.WriteLine("Park Campgrounds");
+                    Console.WriteLine($"{parkName} National Park Campgrounds");
 
-                    Console.WriteLine($"{parkDAO.GetParkInfo(int.Parse(this.ParkChoice)).Name} National Park Campgrounds");
-
+                    //Displays the campsites for the chosen park
                     DisplayCampgroundInformation();
                 }
+
+                // Search for a reservation
                 else if (choice == "2")
                 {
                     Console.Clear();
@@ -121,8 +128,8 @@ namespace Capstone
                     ReservationMenu();
                 }
 
-                //Choice to view all upcoming reservations for the chosen park
-                //chosen park id: parkChoice
+                // Choice to view all upcoming reservations for the chosen park
+                // chosen park id: parkChoice
                 else if (choice == "3")
                 {
                     UpcomingReservationsMenu();
@@ -139,15 +146,16 @@ namespace Capstone
             IList<Reservation> upcomingReservations = siteDAO.GetReservationsNext30Days(int.Parse(this.ParkChoice));
 
             //Header
-            Console.WriteLine("ReservationID\t Name\t ArrivalDate\t Departure Date");
+            Console.WriteLine($"ReservationID\t {"Name", 5}{"ArrivalDate", 37} {"Departure Date", 26}");
 
             //Now print the list
             foreach(Reservation reservation in upcomingReservations)
-            {
+            {   
                 ////Reservation Id, Name, FromDate, ToDate of Rerservation
-                Console.WriteLine($"{reservation.Reservation_Id}\t{reservation.Name}\t" +
+                Console.WriteLine($"{reservation.Reservation_Id}\t{reservation.Name, 35}\t" +
                     $"{reservation.From_Date}\t{reservation.To_Date}" );
             }
+            //Console.WriteLine($"{"Site No.",-5}{"Max Occup.",10}{"Accessible?",10}{"Max RV Length",10}{"Utility",10}{"Total Cost",10}");
 
         }
 
@@ -162,7 +170,7 @@ namespace Capstone
             { 
                 DisplayCampgroundInformation();
 
-                Console.WriteLine("\nSelect a Command: ");
+                Console.WriteLine("\nSelect an Option: ");
                 Console.WriteLine("1) Search for Available Reservation");
                 Console.WriteLine("2) Return to Previous Screen");
                 reservationChoice = Console.ReadLine();
@@ -226,9 +234,12 @@ namespace Capstone
             } while (reservationChoice != "1" || reservationChoice != "2");
         }
 
+        /// <summary>
+        /// Display campgrounds based on chosen park.
+        /// </summary>
         public void DisplayCampgroundInformation()
         {
-            Console.WriteLine($"{"Site No.",-5}{"Name",8}{"Open",20}{"Close",16}{"Daily Fee",10}");
+            Console.WriteLine($"{"Site No.",-5}{"Name",8}{"Open",20}{"Close",16}{"Daily Fee",16}");
             foreach (Campground campground in this.Campgrounds)
             {
                 Console.WriteLine(campground.ToString());
