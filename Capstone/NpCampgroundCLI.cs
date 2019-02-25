@@ -9,14 +9,14 @@ namespace Capstone
 {
     public class NpCampgroundCLI
     {
+        //Properties
         private string ConnectionString { get; } //Save database connection information(server name, db name)
+        private string ParkChoice { get; set; } //Holds which park the user chooses
+        private int CampgroundChoice { get; set; } //Holds the chosen campground number
 
+        //Variables
         private IList<Campground> Campgrounds = new List<Campground>();
         private IList<Site> Sites = new List<Site>();
-
-        private string ParkChoice { get; set; }
-        private int CampgroundChoice { get; set; }
-        private decimal CampGroundFee { get; set; }
 
         private IParkSqlDAO parkDAO;
         private ICampgroundSqlDAO campgroundDAO;
@@ -38,6 +38,7 @@ namespace Capstone
             this.reservationDAO = reservationDAO;
         }
 
+        //Starting point of the program. First shows all parks in the system.
         public void Run()
         {
             //Account for can't parse string that isn't a number
@@ -46,10 +47,10 @@ namespace Capstone
             // Main menu - run until user types in Q
             while (true)
             {
-                // Get a list of parks: Call method to query db table: park for all entries
+                // Get a list of parks: Call method to query db table (park) for all entries
                 IList<Park> parks = parkDAO.GetAllParks();
 
-                do
+                do //using a do to print the initial menu once and then check for valid input
                 {
                     Console.WriteLine("Select from parks to view details");
 
@@ -209,11 +210,11 @@ namespace Capstone
 
                     if (siteReservation == "0") break;
 
-                    Console.WriteLine("What name shoudl the reservation be made under? ");
+                    Console.WriteLine("What name should the reservation be made under? ");
                     string reservationName = Console.ReadLine();
 
                     int reservationID = reservationDAO.CreateReservation(int.Parse(siteReservation), reservationName, arrivalDateChoice, departureDateChoice, DateTime.Now);
-                    Console.WriteLine($"The reservation has been made and the confirmation ID is {reservationID}");
+                    Console.WriteLine($"\nThe reservation has been made and the confirmation ID is {reservationID}");
                 }
 
                 else if (reservationChoice == "2")

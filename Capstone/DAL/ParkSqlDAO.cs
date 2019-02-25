@@ -15,6 +15,7 @@ namespace Capstone.DAL
             this.ConnectionString = connectionString;
         }
 
+        //Open connection to db and return all parks in the park table
         public IList<Park> GetAllParks()
         {
             IList<Park> parks = new List<Park>();
@@ -45,6 +46,7 @@ namespace Capstone.DAL
             return parks;
         }
 
+        //Method to convert a row in the park table to a Park object to add to parks list.
         private Park ConvertReaderToPark(SqlDataReader reader)
         {
             Park park = new Park();
