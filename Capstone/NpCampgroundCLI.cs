@@ -49,6 +49,7 @@ namespace Capstone
             {
                 // Get a list of parks: Call method to query db table (park) for all entries
                 IList<Park> parks = parkDAO.GetAllParks();
+                int numberOfParks = 0;
 
                 do //using a do to print the initial menu once and then check for valid input
                 {
@@ -58,6 +59,7 @@ namespace Capstone
                     foreach (Park park in parks)
                     {
                         Console.WriteLine(park.ToString());
+                        numberOfParks++; //Keep track of how many parks there are to validate input
                     }
                     // Option for user to quit
                     Console.WriteLine("(Q) Quit");
@@ -69,8 +71,8 @@ namespace Capstone
 
                     Console.Clear();
 
-                }
-                while (int.TryParse(this.ParkChoice, out tryParseInt) == false);
+                } //while input is not valid, continue to prompt user to choose a valid park
+                while ((int.TryParse(this.ParkChoice, out tryParseInt) == false) || int.Parse(ParkChoice) <= 0 || int.Parse(ParkChoice) > numberOfParks);
 
                 Park parkChoice = parkDAO.GetParkInfo(int.Parse(this.ParkChoice));
                 Console.WriteLine("Park Information");
