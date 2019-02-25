@@ -237,8 +237,9 @@ namespace Capstone
                     string siteReservation = Console.ReadLine();
 
                     //Check for valid site info
-                    if (siteReservation == "0" || int.TryParse(siteReservation, out tryParse) || int.Parse(siteReservation) < 0 || int.Parse(siteReservation) > numOfSites)
-                        break;
+                    //if (siteReservation == "0" || int.TryParse(siteReservation, out tryParse) || int.Parse(siteReservation) < 0 || int.Parse(siteReservation) > numOfSites)
+                    if (siteReservation == "0")
+                    break;
 
                     Console.WriteLine("What name should the reservation be made under? ");
                     string reservationName = Console.ReadLine();
